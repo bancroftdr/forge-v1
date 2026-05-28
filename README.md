@@ -1,10 +1,10 @@
-# forge-v1
+# FORGE-v1
 
 A custom 4×4 velocity-sensitive USB MIDI pad controller built from scratch, featuring a 16-step onboard sequencer, custom 2-layer PCB, hand-soldered SMD assembly, and laser-cut enclosure.
 
 ## Overview
 
-This project is a fully custom MIDI controller designed and built from the ground up. The hardware is centered around the RP2040 microcontroller, with force-sensitive resistors (FSRs) scanned through a 16:1 analog multiplexer for per-pad velocity detection. Firmware is written in embedded C using the Pico SDK, implementing logarithmic velocity mapping with debounce and hysteresis, and class-compliant USB MIDI via TinyUSB.
+This project is a fully custom MIDI controller designed and built from the ground up. The hardware is centered around the RP2040 microcontroller, with force-sensitive resistors (FSRs) scanned through a 16:1 analog multiplexer for per-pad velocity detection. Firmware is written in embedded C using the Pico SDK, implementing logarithmic velocity mapping, and class-compliant USB MIDI via TinyUSB.
 
 ## Features
 
@@ -17,7 +17,7 @@ This project is a fully custom MIDI controller designed and built from the groun
 
 ## Status
 
-**Currently In Progress** — Estimated completion by early 2027
+**Currently In Progress** — Currently prototyping circuit design; estimated completion by early 2027
 
 ## Repository Structure
 
