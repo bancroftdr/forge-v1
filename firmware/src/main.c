@@ -1,48 +1,56 @@
 /*
  * main.c — FORGE v1 firmware.
  *
- * ⚠ DAY 3 MINIMAL BUILD ⚠
- * This is a temporary, stripped-down main for proving USB MIDI works
- * in isolation. It sends one test note every 2 seconds — no pads,
- * no mux, no sequencer yet.
+ * ⚠ DAY 4 BUTTON TEST ⚠
+ * Reads a single pushbutton on GP15 (internal pull-up) and sends
+ * a MIDI note on press / note-off on release. Proves the full
+ * chain: physical input → firmware → USB MIDI → DAW sound.
  *
- * When the breadboard is wired, restore the full main from the master
- * doc §6.14: add mux/pad/sequencer includes + init calls, replace the
- * test-note loop below with pad_scan() / sequencer_tick().
+ * When the breadboard mux/FSR grid is wired, restore the full main
+ * from master doc §6.14 (mux/pad/sequencer init + pad_scan()).
  */
 #include "pico/stdlib.h"
+#include "hardware/gpio.h"
 #include "bsp/board.h"
 #include "tusb.h"
 
 #include "config.h"
 #include "midi.h"
 
+#define BUTTON_PIN   15
+#define TEST_NOTE    36   /* GM Bass Drum — change to taste */
+
 int main(void) {
     board_init();
     stdio_init_all();
 
-    midi_init();
-    tusb_init();          /* USB stack — must come after board_init() */
+    /* Button input with internal pull-up:
+       not pressed = HIGH (1), pressed = LOW (0) */
+    gpio_init(BUTTON_PIN);
+    gpio_set_dir(BUTTON_PIN, GPIO_IN);
+    gpio_pull_up(BUTTON_PIN);
 
-    uint32_t last_note_us = 0;
+    midi_init();
+    tusb_init();          /* USB stack — after board_init() */
+
     bool note_is_on = false;
 
     while (true) {
-        tud_task();       /* TinyUSB housekeeping — call every loop */
-        midi_task();      /* Flush MIDI TX buffer */
+        tud_task();       /* TinyUSB housekeeping — every loop */
+        midi_task();
 
-        /* ── Temporary test note: toggle note 60 every 2 seconds ── */
-        uint32_t now = time_us_32();
-        if ((now - last_note_us) >= 2000000) {
-            last_note_us = now;
-            if (!note_is_on) {
-                midi_note_on(MIDI_CHANNEL, 60, 100);
-                note_is_on = true;
-            } else {
-                midi_note_off(MIDI_CHANNEL, 60, 0);
-                note_is_on = false;
-            }
+        /* Active-low: pressed when the pin reads 0 */
+        bool pressed = (gpio_get(BUTTON_PIN) == 0);
+
+        if (pressed && !note_is_on) {
+            midi_note_on(MIDI_CHANNEL, TEST_NOTE, 100);
+            note_is_on = true;
+        } else if (!pressed && note_is_on) {
+            midi_note_off(MIDI_CHANNEL, TEST_NOTE, 0);
+            note_is_on = false;
         }
+
+        sleep_ms(1);      /* Light debounce + CPU breather */
     }
     return 0;
 }
