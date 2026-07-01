@@ -29,6 +29,9 @@ add_executable(forge_firmware
     src/main.c
     src/usb_descriptors.c
     src/midi.c
+    src/mux.c
+    src/pad.c
+    src/sequencer.c
 )
 
 target_include_directories(forge_firmware PRIVATE
@@ -37,8 +40,10 @@ target_include_directories(forge_firmware PRIVATE
 
 target_link_libraries(forge_firmware
     pico_stdlib
+    hardware_adc
     tinyusb_device
     tinyusb_board
+    m
 )
 
 target_compile_options(forge_firmware PRIVATE

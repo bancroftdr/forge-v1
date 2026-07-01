@@ -1,0 +1,6 @@
+Qty,Part,Description,DigiKey PN,Unit Cost,Total,Stock Status,Notes
+1,Raspberry Pi Pico W,RP2040 + WiFi (CYW43439) onboard,SC0918,$7.65,$7.65,In stock (7000+),Updated from plain Pico (SC0915) — using the Pico W already on hand; see design_decisions.md
+1,CD74HC4067M96,16:1 analog mux, 24-SOIC,296-21908-1-ND,$0.80,$0.80,OUT OF STOCK — backorder only,VERIFY PN before ordering: current DigiKey listing shows 296-29408-1-ND for this exact part/package; original PN may be outdated
+16,Interlink FSR 402,0.5" sq FSR 10g-1kg,1027-1020-ND,$7.95,$127.20,Verify at order time,Price/stock not independently reconfirmed this pass — recheck before ordering (large line-item cost)
+1,MCP1700T-3302E/TT,3.3V LDO 250mA SOT-23,MCP1700T3302ETTCT-ND,$0.51,$0.51,In stock,Confirmed via DigiKey — PN corrected from original BOM (was MCP1700T-3302ETTCT-ND, missing a hyphen)
+,,,,,"$136.16",,Subtotal — verify FSR and mux lines before ordering

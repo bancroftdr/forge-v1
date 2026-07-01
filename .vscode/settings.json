@@ -1,0 +1,4 @@
+{
+    "cmake.sourceDirectory": "C:/pico/forge-v1/firmware",
+    "cmake.configureOnOpen": false
+}
